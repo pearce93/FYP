@@ -1,16 +1,16 @@
 <?php
-//Collecting the user inputs and assigning them.
-		include_once("AP_Functions.php");
+	//Collecting the user inputs and assigning them.
+	include_once("AP_Functions.php");
 
 
-if(empty(trim($_POST['carLicensePlate'])) || empty(trim($_POST['carModel'])))
-{
-    // Its empty so throw a validation error
-    header('Location: ../../account.php'); 
-}
-else
-{
-    // Input has some text and is not empty.. process accordingly.. 
+	if(empty(trim($_POST['carLicensePlate'])) || empty(trim($_POST['carModel'])))
+	{
+	    // Its empty so throw a validation error
+	    header('Location: ../../account.php'); 
+	}
+	else
+	{
+	    // Input has some text and is not empty.. process accordingly.. 
 
 		$licensePlate = $_POST['carLicensePlate'];
 		$carModel = $_POST['carModel'];
@@ -29,33 +29,27 @@ else
 			exit;
 		}else{		
 			global $db;
-		db_connect();
+			db_connect();
 			$user_id = $_SESSION['UserID'];
 
+			$sql = "SELECT * FROM user WHERE UserID = $user_id";
 			$result = $db->query($sql);
-			var_dump($sql);
-			echo "<p>licensePlate: " . $licensePlate . "</p>
-					<p>carModel: " . $carModel . "</p>
-					<p>UserID: " . $_SESSION['UserID'] . "</p>";
+
+			if ($result->num_rows > 0) {
+				// output data of each row
+				while($row = $result->fetch_assoc()) {
+					//echo "<div class='col-lg-12'><label>License Plate</label>" . $row["CarLicensePlate"]. "<br/>Car Model - " . $row["CarType"] ."</>";
+
+					echo "<tr>
+							<td>".$row["FirstName"]."</td>
+							<td>".$row["LastName"]."</td>
+							<td>".$row["Address"]."</td>
+							<td>".$row["ContactNumber"]."</td>							
+							</tr>";
 
 
-			//Creating a new user in the database.
-			$query = "INSERT INTO car (UserID, CarLicensePlate, CarType) VALUES (?, ?, ?)";
-		
-			$stmt = $db->prepare($query);
-			$stmt->bind_param('iss', $user_id, $licensePlate, $carModel);
-			if(false === $stmt){
-				echo "Prepare Failed";
-				exit;
-			}		
-			$stmt->execute();
-			
-			//Checking that the new user has been inputted.
-			if ($stmt->affected_rows > 0)
-			{
-			 header('Location: ../../account.php');
-			} else {
-				header('Location: ../../account.php');
+
+				}
 			}
 			
 			//Closing the Database connection.

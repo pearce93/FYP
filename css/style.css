@@ -2701,3 +2701,9 @@ table.greyGridTable thead th:first-child {
 table.greyGridTable tfoot td {
   font-size: 14px;
 }
+
+.missingInfo{
+	 font-size: 14px;
+    font-style: italic;
+    font-weight: bold;
+}

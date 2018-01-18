@@ -23,7 +23,7 @@
     <div class="modal fade" id="updatePersonalDetails" style="display:none;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <form action="updatePersonalDetails.php" method="post">
+          <form action="scripts/php/updatePersonalDetails.php" method="post">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -33,7 +33,7 @@
             <div class="modal-body">
               
                 <div class="row topMargin">
-                  <div class="col-lg-offset-2 col-lg-3">
+                  <div class="col-lg-offset-2 col-lg-4">
                     <label>First Name: </label>
                   </div>
                   <div class="col-lg-offset-1 col-lg-4">
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="row topMargin bottomMargin">
-                  <div class="col-lg-offset-2 col-lg-3">
+                  <div class="col-lg-offset-2 col-lg-4">
                     <label>Last Name: </label>
                   </div>
                   <div class="col-lg-offset-1 col-lg-4">
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="row topMargin bottomMargin">
-                  <div class="col-lg-offset-2 col-lg-3">
+                  <div class="col-lg-offset-2 col-lg-4">
                     <label>Address: </label>
                   </div>
                   <div class="col-lg-offset-1 col-lg-4">
@@ -60,11 +60,11 @@
                 </div>
 
                 <div class="row topMargin bottomMargin">
-                  <div class="col-lg-offset-2 col-lg-3">
+                  <div class="col-lg-offset-2 col-lg-4">
                     <label>Contact Number: </label>
                   </div>
                   <div class="col-lg-offset-1 col-lg-4">
-                    <input type="text" class="form-control" name="contactNumber" placeholder="Contact Number" style="width:  100%;">
+                    <input type="number" id="contactNumber" class="form-control" name="contactNumber" placeholder="Contact Number" style="width:  100%;">
                   </div>
                 </div>                
             </div>
@@ -74,7 +74,7 @@
                   <a href="" data-dismiss="modal">Close</a>
                 </div>
                 <div class="col-lg-offset-8 col-lg-2">
-                  <a href="index.php">Save</a>
+                  <input id="updatePersonalDetails" class="btn btn-primary" type="submit" name="submit" value="Save"> 
                 </div>
               </div>
             </div>
@@ -158,8 +158,8 @@
                 <div class="col-lg-offset-2 col-lg-3">
                   <label>Address: </label>
                 </div>
-                <div class="col-lg-offset-1 col-lg-4">
-                  <input type="text" class="form-control" name="address" placeholder="Address" style="width:  100%;">
+                <div class="col-lg-offset-1 col-lg-5">
+                  <?php getUserAddress() ?>
                 </div>
               </div>
 
@@ -168,7 +168,7 @@
                   <label>Contact Number: </label>
                 </div>
                 <div class="col-lg-offset-1 col-lg-4">
-                  <input type="text" class="form-control" name="contactNumber" placeholder="Contact Number" style="width:  100%;">
+                  <?php getUserContactNumber() ?>
                 </div>
               </div>
               <hr/>
@@ -189,6 +189,7 @@
                 <tr>
                   <th>License Plate</th>
                   <th>Model</th>
+                  <th></th>
                 </tr>
                 <?php getUserCars() ?>
               </table>
@@ -277,7 +278,18 @@
           </div>
       </div>        
     </div>
+    <script type="text/javascript">
+      document.getElementById('contactNumber').addEventListener('keydown', function(e) {
+        var key   = e.keyCode ? e.keyCode : e.which;
 
+        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+          (key == 65 && ( e.ctrlKey || e.metaKey  ) ) || 
+          (key >= 35 && key <= 40) ||
+          (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+          (key >= 96 && key <= 105)
+        )) e.preventDefault();
+      });
+    </script>
     <?php getScripts() ?>
   </body>
 </html>

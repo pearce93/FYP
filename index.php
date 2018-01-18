@@ -708,7 +708,6 @@
 	<footer>
 		
 		<div id="social">
-			<a href="http://facebook.com/BootstrapMaster" rel="tooltip" title="Facebook" class="facebook" target="https://www.facebook.com/pearce.feeley">Facebook</a>
 			<a href="http://facebook.com/BootstrapMaster" rel="tooltip" title="Twitter" class="twitter" target="https://twitter.com/pearcefeeley">Twitter</a>
 			<a href="http://BootstrapMaster.com/feed/" rel="tooltip" title="RSS" class="rss" target="https://www.rss.com/">RSS</a>
 			<a href="#" rel="tooltip" title="Github" class="github" target="https://github.com/">Github</a>

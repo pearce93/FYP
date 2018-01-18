@@ -396,6 +396,10 @@
 				echo "<tr>
 						<td>".$row["CarLicensePlate"]."</td>
 						<td>".$row["CarType"]."</td>
+						<td><form action='scripts/php/removeCar.php' method='post'>
+						<input type='hidden' name='carLicensePlate' value='".$row["CarLicensePlate"]."'/>
+						<input type='submit' class='btn btn-danger topMargin' value='X'/>
+						</form></td>
 						</tr>";
 
 			}
@@ -408,7 +412,7 @@
 		global $db;
 		db_connect();
 		$user_id = $_SESSION['UserID'];
-		$sql = "SELECT FirstName FROM user WHERE UserID = $user_id";
+		$sql = "SELECT * FROM user WHERE UserID = $user_id";
 		$result = $db->query($sql);
 
 		if ($result->num_rows > 0) {
@@ -416,9 +420,13 @@
 			while($row = $result->fetch_assoc()) {
 				//echo "<div class='col-lg-12'><label>License Plate</label>" . $row["CarLicensePlate"]. "<br/>Car Model - " . $row["CarType"] ."</>";
 
-				echo "<tr>
+				if(empty($row["FirstName"])){
+					echo "<p class='missingInfo'>*Please provide your first name*</p>";
+				}else{
+					echo "<tr>
 						<td>".$row["FirstName"]."</td>
 						</tr>";
+				}
 			}
 		}else{
 			echo "<tr>
@@ -441,10 +449,68 @@
 			while($row = $result->fetch_assoc()) {
 				//echo "<div class='col-lg-12'><label>License Plate</label>" . $row["CarLicensePlate"]. "<br/>Car Model - " . $row["CarType"] ."</>";
 				if(empty($row["LastName"])){
-					echo "";
+					echo "<p class='missingInfo'>*Please provide your last name*</p>";
 				}else{
 					echo "<tr>
 						<td>".$row["LastName"]."</td>
+						</tr>";
+				}				
+			}
+		}else{
+			echo "<tr>
+					<td></td>
+					</tr>";
+		}
+
+		$db->close();
+		
+	}
+
+	function getUserAddress(){
+		global $db;
+		db_connect();
+		$user_id = $_SESSION['UserID'];
+		$sql = "SELECT Address FROM user WHERE UserID = $user_id";
+		$result = $db->query($sql);
+
+		if ($result->num_rows > 0) {
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+				//echo "<div class='col-lg-12'><label>License Plate</label>" . $row["CarLicensePlate"]. "<br/>Car Model - " . $row["CarType"] ."</>";
+				if(empty($row["Address"])){
+					echo "<p class='missingInfo'>*Please provide an address*</p>";
+				}else{
+					echo "<tr>
+						<td>".$row["Address"]."</td>
+						</tr>";
+				}				
+			}
+		}else{
+			echo "<tr>
+					<td></td>
+					</tr>";
+		}
+
+		$db->close();
+		
+	}
+
+	function getUserContactNumber(){
+		global $db;
+		db_connect();
+		$user_id = $_SESSION['UserID'];
+		$sql = "SELECT ContactNumber FROM user WHERE UserID = $user_id";
+		$result = $db->query($sql);
+
+		if ($result->num_rows > 0) {
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+				//echo "<div class='col-lg-12'><label>License Plate</label>" . $row["CarLicensePlate"]. "<br/>Car Model - " . $row["CarType"] ."</>";
+				if(empty($row["ContactNumber"])){
+					echo "<p class='missingInfo'>*Please provide a contact number*</p>";
+				}else{
+					echo "<tr>
+						<td>".$row["ContactNumber"]."</td>
 						</tr>";
 				}				
 			}
