@@ -2712,3 +2712,47 @@ table.greyGridTable tfoot td {
 	background: #ffffff !important;
 	color: #000;
 }
+
+.dataTable tr{
+	text-align: center;
+}
+
+.Available {
+    position:relative;
+	border-left: solid;
+	width: 4px;
+}
+
+.Available:last-of-type{
+	border-right: solid;
+}
+
+.Available:before {
+    content: "\f1b9";  /* this is your text. You can also use UTF-8 character codes as I do here */
+    font-family: FontAwesome;
+    left:-5px;
+    top:0;
+ }
+ 
+ .Available:hover {
+ 	border-color: black;
+    color: #1275BB;
+    cursor: pointer;
+ }
+
+.Road {
+    position:relative;
+    background-color: grey;
+}
+
+.Road{
+    cursor: not-allowed;
+}
+
+.Road:first-of-type {
+    border-left: solid;
+}
+
+.Road:last-of-type {
+    border-right: solid;
+}

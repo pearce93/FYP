@@ -76,17 +76,15 @@
 				} else {
 				 header('Location: register.php');
 				}
-			}		
+			}
 			
 			//Closing the Database connection.
 			$db->close();
-			
 		}
 	}
 
 	function createSession($user_id){
 		$_SESSION['UserID'] = $user_id;
-
 		header("Location: account.php");
 	}
 
@@ -170,8 +168,7 @@
 
 
 	function getHeadTag(){
-		echo "
-			<link rel='shortcut icon' type='image/png' href='img/icons/favicon.ico'/>
+		echo "<link rel='shortcut icon' type='image/png' href='img/icons/favicon.ico'/>
 			
 
 			<!-- start: Meta -->
@@ -212,7 +209,22 @@
 	}
 
 	function getNavBar(){
-		global $Username;
+		global $Username;		
+
+		global $db;
+		db_connect();
+		if(isset($_SESSION['UserID'])){
+			$user_id = $_SESSION['UserID'];
+			$adminCheck = "";
+			$sql = "SELECT UserTypeID FROM User WHERE UserID = $user_id AND UserTypeID = 1";
+			$result = $db->query($sql);
+
+			if ($result->num_rows > 0) {
+				$adminCheck = "<li><a href='admin.php'>Admin</a></li>";
+			}
+		}
+		
+
 		if(!loggedIn()){
 			$userSignIn = "<li><a href='signin.php' class='home'>Sign In</a> | <a href='register.php' class='home'>Register</a></li>";
 		}else{
@@ -220,8 +232,8 @@
 								<a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>" . $Username . "</a>
 								<ul class='dropdown-menu'>
 									<li><a href='account.php' class='home'>My Account</a></li>
-									<li><a href='quickBook.php'>Quick Book</a></li>
-									<li><a href='logout.php'>Logout</a></li>
+									<li><a href='quickBook.php'>Quick Book</a></li>". $adminCheck .
+									"<li><a href='logout.php'>Logout</a></li>
 								</ul>
 							</li>";
 		}
@@ -301,14 +313,13 @@
 		<!-- start: Java Script -->
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
+		<script type='text/javascript' src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script> 
 		<script type='text/javascript' src='scripts/js/isotope.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.imagesloaded.js'></script>
 		<script type='text/javascript' src='scripts/js/bootstrap.min.js'></script>
-		<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-		<script type='text/javascript' src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script> 
+		<script type='text/javascript' src='scripts/js/fancybox.js'></script>
 		<script type='text/javascript' src='scripts/js/flexslider.js'></script>
 		<script type='text/javascript' src='scripts/js/carousel.js'></script>
-		<script type='text/javascript' src='scripts/js/fancybox.js'></script>
 		<script type='text/javascript' src='scripts/js/twitter.js'></script>
 		<script type='text/javascript' src='scripts/js/modernizr.custom.79639.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.ba-cond.min.js'></script>
@@ -590,121 +601,159 @@
 
 		echo "
 			<div class='row'>
-				<div class='col-lg-12'>";
+				<div class='col-lg-12 registrationBox'>";
 
 				global $db;
 				db_connect();
-				$user_id = $_SESSION['UserID'];
+				if(isset($_SESSION['UserID'])){					
+					$user_id = $_SESSION['UserID'];
 
-
-				//Getting Each floor depending on the carParkID
-				$sql = "SELECT DISTINCT FloorNumber FROM space WHERE CarParkID = $CarParkID";
-				$result = $db->query($sql);	
-				if ($result->num_rows > 0) {
-					// output data of each row
-					echo "
-						<h2>Dynamic Tabs</h2>
-  						<ul class='nav nav-tabs'>";
-
-  					//Looping to find the amount floors in the carPark
-					while($row = $result->fetch_assoc()) {
-						
-						if(empty($row["FloorNumber"])){
-							echo "<p class='missingInfo'>*Please provide your first name*</p>";
-						}else{
-							echo "<li><a data-toggle='tab' href='#floor".$row["FloorNumber"]."'>".$row["FloorNumber"]."</a></li>";
-						}
-
-					};
-
-					echo "</ul>";
-
-					//Turning the amount of floors into different tabs with different content for each floor.
+					//Getting Each floor depending on the carParkID
 					$sql = "SELECT DISTINCT FloorNumber FROM space WHERE CarParkID = $CarParkID";
 					$result = $db->query($sql);	
-					if($result->num_rows > 0) {
+					if ($result->num_rows > 0) {
+						// output data of each row
+						echo "
+							<h2>Select your Parking Space</h2>
+	  						<ul class='nav nav-tabs'>";
 
-						echo "<div class='tab-content'>
-
-									<div id='floor" . $row["FloorNumber"] . "' class='tab-pane active in home'>
-										//TODO: SHOW SOME SORT OF ADVERT HERE
-									</div>";
-
+	  					//Looping to find the amount floors in the carPark
 						while($row = $result->fetch_assoc()) {
-						
+							
 							if(empty($row["FloorNumber"])){
-								
 								echo "<p class='missingInfo'>*Please provide your first name*</p>";
-
 							}else{
-								echo "
-									<div id='floor" . $row["FloorNumber"] . "' class='tab-pane fade'>
+								echo "<li><a data-toggle='tab' href='#floor".$row["FloorNumber"]."'>".$row["FloorNumber"]."</a></li>";
+							}
 
-										<table id='example'>
-											<thead>
-												<tr><th>header " . $row["FloorNumber"] . "</th></tr>
-											</thead>
-											<tbody>";
-												
+						};
 
-												//TODO: loop TD's so we can pivot the parking spaces.
+						echo "</ul>";
 
-												$sql1 = "SELECT DISTINCT SpaceRow FROM space WHERE CarParkID = $CarParkID AND FloorNumber = " . $row["FloorNumber"] ."";
-												
-												$result1 = $db->query($sql1);	
-												if($result1->num_rows > 0) {
+						//Turning the amount of floors into different tabs with different content for each floor.
+						$sql = "SELECT DISTINCT FloorNumber FROM space WHERE CarParkID = $CarParkID";
+						$result = $db->query($sql);	
+						if($result->num_rows > 0) {
 
-													while($row1 = $result1->fetch_assoc()){
-														if(empty($row1["SpaceRow"])){
+							echo "<div class='tab-content'>
 
-															echo "<td>hello</td>";
+								<div id='floor" . $row["FloorNumber"] . "' class='tab-pane active in home'>//TODO: SHOW SOME SORT OF ADVERT HERE</div>";
+
+							while($row = $result->fetch_assoc()) {
+							
+								if(empty($row["FloorNumber"])){
+									
+									echo "<p class='missingInfo'>*Please provide your first name*</p>";
+
+								}else{
+									echo "
+										<div id='floor" . $row["FloorNumber"] . "' class='tab-pane fade'>
+
+											<table id='carPark" . $row["FloorNumber"] . "' class='dataTable'>
+												<thead>";
+
+												$sqlTH = "SELECT DISTINCT SpaceColumn FROM space WHERE FloorNumber = " . $row["FloorNumber"] . " AND CarParkID = $CarParkID";
+												$resultTH = $db->query($sqlTH);
+												if($resultTH->num_rows > 0){
+													while($rowTH = $resultTH->fetch_assoc()){
+														if(empty($rowTH["SpaceColumn"])){
+															echo "Error";
 														}else{
-
-
-															echo "<tr id='row". $row1["SpaceRow"] ."'>";
-
-																$sql2 = "SELECT DISTINCT SpaceColumn FROM space WHERE CarParkID = $CarParkID AND FloorNumber = " . $row["FloorNumber"] ."";
-																$result2 = $db->query($sql2);	
-																if($result2->num_rows > 0) {
-																	while ($row2 = $result2->fetch_assoc()) {
-																		if(empty($row2["SpaceColumn"])){
-
-																			echo "<td>hello</td>";
-																		}else{
-																			echo "<td id='column".$row2["SpaceColumn"]."'>test</td>";
-																		}
-																	}
-																}else{
-																	echo "error";
-																}
-															echo "</tr>";
-
+															echo "<th></th>";
 														}
 													}
-
-
 												}else{
-													echo "<td>world</td>";
-												}
-												echo "</tr>
-											</tbody>
-										</table>
-									</div>";
-							}
-						};
-						echo "</div>";
-					}
-					
+													echo "here";
+												}									
+												echo "</thead>
+												<tbody>";
+													
 
-				}else{
-					echo "<tr><td></td></tr>";
-				}
-				$db->close();
-							
+													//TODO: loop TD's so we can pivot the parking spaces.
+
+													$sql1 = "SELECT DISTINCT SpaceRow FROM space WHERE CarParkID = $CarParkID AND FloorNumber = " . $row["FloorNumber"] ."";
+													
+													$result1 = $db->query($sql1);	
+													if($result1->num_rows > 0) {
+
+														while($row1 = $result1->fetch_assoc()){
+															if(empty($row1["SpaceRow"])){
+
+																echo "<td>hello</td>";
+															}else{
+
+
+																echo "<tr id='row". $row1["SpaceRow"] ."'>";
+
+																	$sql2 = "SELECT DISTINCT `SpaceID`, `CarParkID`, `FloorNumber`, `SpaceRow`, `SpaceColumn`,`space`.SpaceTypeID, `spacetype`.`SpaceType` FROM `space` inner JOIN `spacetype` ON `space`.`SpaceTypeID` = `spacetype`.`SpaceTypeID` WHERE CarParkID = $CarParkID AND FloorNumber = " . $row["FloorNumber"] ." AND `SpaceRow` = ". $row1["SpaceRow"] . " ORDER BY SpaceID";
+																	//var_dump($sql2);
+																	$result2 = $db->query($sql2);	
+																	if($result2->num_rows > 0) {
+																		while ($row2 = $result2->fetch_assoc()) {
+																			if(empty($row2["SpaceColumn"])){
+
+																				echo "<td>hello</td>";
+																			}else{
+																				//todo borders in the grid and icons for cars
+																				echo "<td id='".$row2["SpaceID"]."' class='column".$row2["SpaceColumn"]. " " .$row2["SpaceType"]."'>&nbsp;</td>";
+																			}
+																		}
+																	}else{
+																		echo "error";
+																	}
+																echo "</tr>";
+
+															}
+														}
+
+
+													}else{
+														echo "<td>world</td>";
+													}
+													echo "</tr>
+												</tbody>
+											</table>
+										</div>";
+								}
+							};
+							echo "</div>";
+						}
 						
 
+					}else{
+						echo "<tr><td></td></tr>";
+					}
+					$db->close();
+				}else{
+					echo "Log in";
+				}
 		echo "
 				</div>
 			</div>";
+	}
+
+	function getFloors($CarParkID){
+		global $db;
+		db_connect();
+		$user_id = $_SESSION['UserID'];
+
+		//Getting Each floor depending on the carParkID
+		$sql = "SELECT DISTINCT FloorNumber FROM space WHERE CarParkID = $CarParkID";
+		$result = $db->query($sql);	
+		if ($result->num_rows > 0) {
+			while($row = $result->fetch_assoc()) {				
+				if(empty(!$row["FloorNumber"])){
+					echo "
+					$(document).ready(function() {
+						$('#carPark". $row["FloorNumber"] ."').DataTable({
+							'searching': false,
+							'paging': false,
+							'info': false,
+							'ordering': false
+						});
+					});";
+				}
+			};
+		}
 	}
 ?>

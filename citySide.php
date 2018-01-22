@@ -25,19 +25,6 @@
 
     <?php getScripts() ?>
 
-    <script type="text/javascript">
-      $(document).ready(function() {
-        console.log("Hello");
-        $('#example').DataTable({
-          responsive: true,
-          "ordering": false,
-          "searching": false,
-          "paging": false,
-              "info": false,
-              "stripeClasses": []
-        });
-      } );
-    </script>
 
 </body>
 </html>
