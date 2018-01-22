@@ -601,8 +601,9 @@
 
 		echo "
 			<div class='row'>
-				<div class='col-lg-12 registrationBox'>";
-
+				<div class='col-lg-12 registrationBox'>
+				<h1 class='text-center topMargin'>Select Parking Space</h1>
+				<hr>";
 				global $db;
 				db_connect();
 				if(isset($_SESSION['UserID'])){					
@@ -614,7 +615,6 @@
 					if ($result->num_rows > 0) {
 						// output data of each row
 						echo "
-							<h2>Select your Parking Space</h2>
 	  						<ul class='nav nav-tabs'>";
 
 	  					//Looping to find the amount floors in the carPark
@@ -623,7 +623,7 @@
 							if(empty($row["FloorNumber"])){
 								echo "<p class='missingInfo'>*Please provide your first name*</p>";
 							}else{
-								echo "<li><a data-toggle='tab' href='#floor".$row["FloorNumber"]."'>".$row["FloorNumber"]."</a></li>";
+								echo "<li><a data-toggle='tab' href='#floor".$row["FloorNumber"]."'>Floor ".$row["FloorNumber"]."</a></li>";
 							}
 
 						};
