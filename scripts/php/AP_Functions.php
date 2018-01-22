@@ -168,41 +168,6 @@
 	   return $res_array;
 	}
 
-	function getRangeList($range){
-		//Step1
-		$db = mysqli_connect('localhost','root','','CutPriceBedsNI')
-		or die('Error connecting to MySQL server.');
-
-
-		//Step2
-		$query = "SELECT * FROM " . $range . " ";
-		mysqli_query($db, $query) or die('Error querying database.');
-
-		//Step3
-		$result = mysqli_query($db, $query);
-
-		while ($row = mysqli_fetch_array($result)) {
-			
-			echo '<div class="col-lg-4 col-md-6 mb-4">
-	              <div class="card h-100">
-	                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-	                <div class="card-body">
-	                  <h2 class="card-title">
-	                    <a href="#">'. $row[$range].'</a>
-	                  </h2>
-	                  <h4>Starting from <label class="price">£'. $row['Price'].'</label></h4>
-	                  <p class="card-text">' . $row['Description'] .'</p>
-	                </div>
-	                <div class="card-footer">
-	                  <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9733; <!--&#9734;--></small>
-	                </div>
-	              </div>
-	            </div>';
-		}
-
-		//Step 4
-		mysqli_close($db);
-	}
 
 	function getHeadTag(){
 		echo "
@@ -233,6 +198,8 @@
 			<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Boogaloo'>
 			<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Economica:700,400italic'>
 		    <link href='css/container.css' rel='stylesheet'>
+		    <link href='css/parking-spaces.css' rel='stylesheet'>
+		    <link rel='stylesheet' href='https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css'>
 			<!-- end: CSS -->
 
 		    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -337,6 +304,8 @@
 		<script type='text/javascript' src='scripts/js/isotope.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.imagesloaded.js'></script>
 		<script type='text/javascript' src='scripts/js/bootstrap.min.js'></script>
+		<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+		<script type='text/javascript' src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script> 
 		<script type='text/javascript' src='scripts/js/flexslider.js'></script>
 		<script type='text/javascript' src='scripts/js/carousel.js'></script>
 		<script type='text/javascript' src='scripts/js/fancybox.js'></script>
@@ -344,13 +313,11 @@
 		<script type='text/javascript' src='scripts/js/modernizr.custom.79639.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.ba-cond.min.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.slitslider.js'></script>
-
 		<script type='text/javascript' src='scripts/js/excanvas.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.flot.min.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.flot.pie.min.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.flot.stack.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.flot.resize.min.js'></script>
-
 		<script defer='defer' src='scripts/js/custom.js'></script>
 
 		<!-- end: Java Script -->";
@@ -619,4 +586,125 @@
 		$CreationDate = $user['CreationDate'];
 	}
 
+	function getCarPark($CarParkID){
+
+		echo "
+			<div class='row'>
+				<div class='col-lg-12'>";
+
+				global $db;
+				db_connect();
+				$user_id = $_SESSION['UserID'];
+
+
+				//Getting Each floor depending on the carParkID
+				$sql = "SELECT DISTINCT FloorNumber FROM space WHERE CarParkID = $CarParkID";
+				$result = $db->query($sql);	
+				if ($result->num_rows > 0) {
+					// output data of each row
+					echo "
+						<h2>Dynamic Tabs</h2>
+  						<ul class='nav nav-tabs'>";
+
+  					//Looping to find the amount floors in the carPark
+					while($row = $result->fetch_assoc()) {
+						
+						if(empty($row["FloorNumber"])){
+							echo "<p class='missingInfo'>*Please provide your first name*</p>";
+						}else{
+							echo "<li><a data-toggle='tab' href='#floor".$row["FloorNumber"]."'>".$row["FloorNumber"]."</a></li>";
+						}
+
+					};
+
+					echo "</ul>";
+
+					//Turning the amount of floors into different tabs with different content for each floor.
+					$sql = "SELECT DISTINCT FloorNumber FROM space WHERE CarParkID = $CarParkID";
+					$result = $db->query($sql);	
+					if($result->num_rows > 0) {
+
+						echo "<div class='tab-content'>
+
+									<div id='floor" . $row["FloorNumber"] . "' class='tab-pane active in home'>
+										//TODO: SHOW SOME SORT OF ADVERT HERE
+									</div>";
+
+						while($row = $result->fetch_assoc()) {
+						
+							if(empty($row["FloorNumber"])){
+								
+								echo "<p class='missingInfo'>*Please provide your first name*</p>";
+
+							}else{
+								echo "
+									<div id='floor" . $row["FloorNumber"] . "' class='tab-pane fade'>
+
+										<table id='example'>
+											<thead>
+												<tr><th>header " . $row["FloorNumber"] . "</th></tr>
+											</thead>
+											<tbody>";
+												
+
+												//TODO: loop TD's so we can pivot the parking spaces.
+
+												$sql1 = "SELECT DISTINCT SpaceRow FROM space WHERE CarParkID = $CarParkID AND FloorNumber = " . $row["FloorNumber"] ."";
+												
+												$result1 = $db->query($sql1);	
+												if($result1->num_rows > 0) {
+
+													while($row1 = $result1->fetch_assoc()){
+														if(empty($row1["SpaceRow"])){
+
+															echo "<td>hello</td>";
+														}else{
+
+
+															echo "<tr id='row". $row1["SpaceRow"] ."'>";
+
+																$sql2 = "SELECT DISTINCT SpaceColumn FROM space WHERE CarParkID = $CarParkID AND FloorNumber = " . $row["FloorNumber"] ."";
+																$result2 = $db->query($sql2);	
+																if($result2->num_rows > 0) {
+																	while ($row2 = $result2->fetch_assoc()) {
+																		if(empty($row2["SpaceColumn"])){
+
+																			echo "<td>hello</td>";
+																		}else{
+																			echo "<td id='column".$row2["SpaceColumn"]."'>test</td>";
+																		}
+																	}
+																}else{
+																	echo "error";
+																}
+															echo "</tr>";
+
+														}
+													}
+
+
+												}else{
+													echo "<td>world</td>";
+												}
+												echo "</tr>
+											</tbody>
+										</table>
+									</div>";
+							}
+						};
+						echo "</div>";
+					}
+					
+
+				}else{
+					echo "<tr><td></td></tr>";
+				}
+				$db->close();
+							
+						
+
+		echo "
+				</div>
+			</div>";
+	}
 ?>

@@ -1,21 +1,21 @@
-jQuery(document).ready(function($){
+// jQuery(document).ready(function($){
 	
-	function goToByScroll(id){
-	      // Remove "link" from the ID
-	    id = id.replace("link", "");
-	      // Scroll
-	    $('html,body').animate({
-	        scrollTop: $("#"+id).offset().top},
-	        'slow');
-	}
+// 	function goToByScroll(id){
+// 	      // Remove "link" from the ID
+// 	    id = id.replace("link", "");
+// 	      // Scroll
+// 	    $('html,body').animate({
+// 	        scrollTop: $("#"+id).offset().top},
+// 	        'slow');
+// 	}
 	
-	$('.nav > li > a').click(function(){
+// 	$('.nav > li > a').click(function(){
 		
-		goToByScroll($(this).attr('class'));
+// 		goToByScroll($(this).attr('class'));
 				
-	});
+// 	});
 		
-});	
+// });	
 
 
 

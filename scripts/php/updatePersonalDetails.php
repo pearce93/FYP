@@ -68,9 +68,9 @@
 
 						
 						$sql = "UPDATE user SET FirstName = '" . $updateFirstName . "', LastName = '" . $updateLastName . "', Address = '" . $updateAddress . "', ContactNumber = '" . $updateContactNumber . "' WHERE UserID = " . $user_id;#
-							var_dump($sql);
+
 						if ($db->query($sql) === TRUE) {
-							echo "Record updated successfully";
+							//echo "Record updated successfully";
 						} else {
 							echo "Error updating record: " . $db->error;
 						}

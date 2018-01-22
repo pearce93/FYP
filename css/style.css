@@ -2707,3 +2707,8 @@ table.greyGridTable tfoot td {
     font-style: italic;
     font-weight: bold;
 }
+
+.carPark .nav-tabs a:focus{
+	background: #ffffff !important;
+	color: #000;
+}
