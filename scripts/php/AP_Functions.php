@@ -14,7 +14,7 @@
 	}
 
 	function registerUser(){
-
+		echo "<p>hello</p>";
 		global $db;
 		db_connect();
 		//Collecting the user inputs and assigning them.
@@ -24,6 +24,7 @@
 		//Picking up on the users password and hashing it so that it is stored securely.
 		$hashed_password = password_hash($Password, PASSWORD_DEFAULT);
 		
+
 		//Checking that all the required feilds are set.
 		if (!isset($Username) || !isset($Email) || !isset($Password))
 		{
@@ -72,9 +73,19 @@
 				//Checking that the new user has been inputted.
 				if ($stmt->affected_rows > 0)
 				{
-				 header('Location: account.php');
+					$query = "SELECT * FROM User WHERE Username = '" . $Username ."'";
+					$tbl = $db->query($query);
+					$user = $tbl->fetch_assoc();
+					$_SESSION["UserID"] = $user["UserID"];
+					/*dumps information from database*/
+					//var_dump($user);
+
+}
+				//Checking that the username exists in the database.
+				if(mysqli_num_rows($tbl)>0){
+					header('Location: account.php');
 				} else {
-				 header('Location: register.php');
+					header('Location: register.php');
 				}
 			}
 			
@@ -183,6 +194,8 @@
 			<!-- end: Mobile Specific -->
 			
 		    <!-- start: CSS -->
+		    <link rel='stylesheet' type='text/css' media='all'
+      href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css'/>
 			<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 		    <link href='css/bootstrap.min.css' rel='stylesheet'>
 		    <link href='css/bootstrap-responsive.min.css' rel='stylesheet'>
@@ -194,17 +207,11 @@
 			<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Droid+Serif'>
 			<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Boogaloo'>
 			<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Economica:700,400italic'>
+
 		    <link href='css/container.css' rel='stylesheet'>
 		    <link href='css/parking-spaces.css' rel='stylesheet'>
 		    <link rel='stylesheet' href='https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css'>
 			<!-- end: CSS -->
-
-		    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-		    <!--[if lt IE 9]>
-		      <script src='http://html5shim.googlecode.com/svn/trunk/html5.js'></script>
-		    <![endif]-->
-
-
 		";
 	}
 
@@ -313,6 +320,7 @@
 		<!-- start: Java Script -->
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
+		<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js'></script>
 		<script type='text/javascript' src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script> 
 		<script type='text/javascript' src='scripts/js/isotope.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.imagesloaded.js'></script>
@@ -386,12 +394,36 @@
 		
 	}
 
+	function getUserCarsList(){
+		global $db;
+		db_connect();
+		$user_id = $_SESSION['UserID'];
+		$sql = "SELECT * FROM car WHERE UserID = $user_id";
+		$result = $db->query($sql);
+
+		if ($result->num_rows > 0) {
+			// output data of each row
+
+			echo "<select class='form-control' id='carSelected' name='carSelected' required>
+					<option value='' selected='true' disabled='disabled'>Choose from list";
+					$count = 1;
+			while($row = $result->fetch_assoc()) {
+				echo "<option value='Car". $count. "'>" .$row["CarType"]. " - " . $row["CarLicensePlate"] . "</option>";
+			}
+			echo "</option>
+				</select>";
+		}
+		$db->close();
+		
+	}
+
 	function getUserFirstName(){
 		global $db;
 		db_connect();
 		$user_id = $_SESSION['UserID'];
 		$sql = "SELECT * FROM user WHERE UserID = $user_id";
 		$result = $db->query($sql);
+
 
 		if ($result->num_rows > 0) {
 			// output data of each row
@@ -599,11 +631,7 @@
 
 	function getCarPark($CarParkID){
 
-		echo "
-			<div class='row'>
-				<div class='col-lg-12 registrationBox'>
-				<h1 class='text-center topMargin'>Select Parking Space</h1>
-				<hr>";
+		
 				global $db;
 				db_connect();
 				if(isset($_SESSION['UserID'])){					
@@ -615,17 +643,11 @@
 					if ($result->num_rows > 0) {
 						// output data of each row
 						echo "
-	  						<ul class='nav nav-tabs'>";
+	  						<ul class='nav nav-tabs topMargin'>";
 
 	  					//Looping to find the amount floors in the carPark
 						while($row = $result->fetch_assoc()) {
-							
-							if(empty($row["FloorNumber"])){
-								echo "<p class='missingInfo'>*Please provide your first name*</p>";
-							}else{
-								echo "<li><a data-toggle='tab' href='#floor".$row["FloorNumber"]."'>Floor ".$row["FloorNumber"]."</a></li>";
-							}
-
+							echo "<li><a data-toggle='tab' href='#floor".$row["FloorNumber"]."'>Floor ".$row["FloorNumber"]."</a></li>";
 						};
 
 						echo "</ul>";
@@ -637,16 +659,13 @@
 
 							echo "<div class='tab-content'>
 
-								<div id='floor" . $row["FloorNumber"] . "' class='tab-pane active in home'>//TODO: SHOW SOME SORT OF ADVERT HERE</div>";
+								<div id='floor" . $row["FloorNumber"] . "' class='tab-pane active in home'>
+									<img class='img-responsive' src='img/carparks/CastleCourt.jpg' alt='Castle Court Shopping Center Image' />
+								</div>";
 
 							while($row = $result->fetch_assoc()) {
 							
-								if(empty($row["FloorNumber"])){
-									
-									echo "<p class='missingInfo'>*Please provide your first name*</p>";
-
-								}else{
-									echo "
+								echo "
 										<div id='floor" . $row["FloorNumber"] . "' class='tab-pane fade'>
 
 											<table id='carPark" . $row["FloorNumber"] . "' class='dataTable'>
@@ -714,22 +733,18 @@
 												</tbody>
 											</table>
 										</div>";
-								}
+	
 							};
 							echo "</div>";
 						}
-						
 
 					}else{
-						echo "<tr><td></td></tr>";
+						echo "Error";
 					}
 					$db->close();
 				}else{
 					echo "Log in";
 				}
-		echo "
-				</div>
-			</div>";
 	}
 
 	function getFloors($CarParkID){
@@ -756,4 +771,5 @@
 			};
 		}
 	}
+
 ?>
