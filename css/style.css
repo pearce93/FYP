@@ -2760,3 +2760,7 @@ table.greyGridTable tfoot td {
 .carPark .tab-content {
 	padding: 15px 20px 20px 20px;
 }
+
+.carPark-table{
+	padding: 6px 8px !important;
+}
