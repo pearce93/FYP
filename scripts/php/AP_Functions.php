@@ -211,8 +211,6 @@
 		    <link href='css/container.css' rel='stylesheet'>
 		    <link href='css/parking-spaces.css' rel='stylesheet'>
 		    <link rel='stylesheet' href='https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css'>
-		    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.17/jquery.datetimepicker.css'>
-		    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.17/jquery.datetimepicker.min.css'>
 			<!-- end: CSS -->
 		";
 	}
@@ -340,10 +338,6 @@
 		<script type='text/javascript' src='scripts/js/jquery.flot.stack.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.flot.resize.min.js'></script>
 		<script defer='defer' src='scripts/js/custom.js'></script>
-		<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.17/jquery.datetimepicker.full.js'>
-		<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.17/jquery.datetimepicker.full.min.js'>
-		<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.17/jquery.datetimepicker.js'>
-
 
 		<!-- end: Java Script -->";
 	}
@@ -720,7 +714,7 @@
 																				echo "<td>hello</td>";
 																			}else{
 																				//todo borders in the grid and icons for cars
-																				echo "<td id='".$row2["SpaceID"]."' class='carPark-table column".$row2["SpaceColumn"]. " " .$row2["SpaceType"]."'>&nbsp;</td>";
+																				echo "<td id='".$row2["SpaceID"]."' class='column".$row2["SpaceColumn"]. " " .$row2["SpaceType"]."'>&nbsp;</td>";
 																			}
 																		}
 																	}else{
