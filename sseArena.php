@@ -8,8 +8,6 @@
 		<title>Accelerated Parking - </title> 
 		<?php getHeadTag() ?>
 
-		<?php getScripts() ?>
-
 	</head>
 	<body>
 		<!--start: Header -->
@@ -77,11 +75,7 @@
 			</div>
 		</form>
 
-		<div class="carPark container topMargin">
-
-			<?php getCarPark('4'); ?>
-				
-		</div>
+		<?php getScripts() ?>
 
 
 </body>
