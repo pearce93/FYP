@@ -203,6 +203,7 @@
 			<link href='css/slider1.css' rel='stylesheet'>
 			<link href='css/slider2.css' rel='stylesheet'>
 			<link href='css/slider3.css' rel='stylesheet'>
+			<link href='css/jquery.datetimepicker.min.css' rel='stylesheet'>
 			<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700'>
 			<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Droid+Serif'>
 			<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Boogaloo'>
@@ -321,10 +322,11 @@
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
 		<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js'></script>
-		<script type='text/javascript' src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script> 
+		<script type='text/javascript' src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script>
+		<script type='text/javascript' src='scripts/js/bootstrap.min.js'></script>
+		<script type='text/javascript' src='scripts/js/jquery.datetimepicker.full.js'></script>
 		<script type='text/javascript' src='scripts/js/isotope.js'></script>
 		<script type='text/javascript' src='scripts/js/jquery.imagesloaded.js'></script>
-		<script type='text/javascript' src='scripts/js/bootstrap.min.js'></script>
 		<script type='text/javascript' src='scripts/js/fancybox.js'></script>
 		<script type='text/javascript' src='scripts/js/flexslider.js'></script>
 		<script type='text/javascript' src='scripts/js/carousel.js'></script>

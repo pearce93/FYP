@@ -8,6 +8,8 @@
 		<title>Accelerated Parking - </title> 
 		<?php getHeadTag() ?>
 
+		<?php getScripts() ?>
+
 	</head>
 	<body>
 		<!--start: Header -->
@@ -25,29 +27,50 @@
 							<hr />
 							<?php getCarPark('2'); ?>
 						</div>
-						<div class="col-md-3 col-xs-12 registrationBox">
+						<div class="col-md-3 col-md-offset-1 col-xs-12 registrationBox">
 							<h2 class="topMargin" style="text-align: center;">Details</h2>
 							<hr />
 
 							<div class="row">
-								<div class="col-xs-12">
-									<div class="col-xs-12 col-md-6"><label>Arrival Date</label></div>
-									<div class="form-group">
-										<label for="exampleInputEmail1">Email address</label>
-										<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-										<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-									</div>
-									<div class="form-group">
-										<label for="exampleInputPassword1">Password</label>
-										<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-									</div>
-									<div class="form-check">
-										<input type="checkbox" class="form-check-input" id="exampleCheck1">
-										<label class="form-check-label" for="exampleCheck1">Check me out</label>
-									</div>
-									<button type="submit" class="btn btn-primary">Submit</button>
+								<div class="col-xs-12 col-md-10 col-md-offset-1">
+									<h2>Arrival:</h2>
+									<input class="form-control" id="arrival" name="arrival" />
+									<script type="text/javascript">
+										$(function(){
+											$("#arrival").datetimepicker({
+												step: 10,
+												minDate: 0,
+											});
+										});
+									</script>									
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-xs-12 col-md-10 col-md-offset-1">
+									<h2>Departure:</h2>
+									<div class="form-group">
+										<input class="form-control" id="departure" name="departure" />
+									</div>
+									<script type="text/javascript">
+										$(function(){
+											$("#departure").datetimepicker({
+												step: 10,
+												minDate: 0,
+											});
+										});
+									</script>									
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-md-10 col-md-offset-1">
+									<h2>Car:</h2>
+									<div class="form-group">
+										<?php getUserCarsList(); ?>
+									</div>
+								</div>
+							</div>
+							<div class="topMargin">&nbsp</div>
+
 						</div>
 					</div>
 				</div>
@@ -60,8 +83,6 @@
 				
 		</div>
 
-
-		<?php getScripts() ?>
 
 </body>
 </html>
