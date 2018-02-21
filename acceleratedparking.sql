@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 15, 2018 at 10:57 PM
+-- Generation Time: Feb 21, 2018 at 08:12 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -2397,6 +2397,28 @@ INSERT INTO `space` (`SpaceID`, `CarParkID`, `FloorNumber`, `SpaceRow`, `SpaceCo
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `spacetype`
+--
+
+CREATE TABLE `spacetype` (
+  `SpaceTypeID` int(11) NOT NULL,
+  `SpaceType` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `spacetype`
+--
+
+INSERT INTO `spacetype` (`SpaceTypeID`, `SpaceType`) VALUES
+(1, 'Available'),
+(2, 'Unavailable'),
+(3, 'Disabled'),
+(4, 'Family'),
+(5, 'Road');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -2431,7 +2453,27 @@ INSERT INTO `user` (`UserID`, `Username`, `EmailAddress`, `Password`, `CreationD
 (18, 'Ryan', 'ryanc@gmail.com', '$2y$10$2VgLpibtWCLg.yh/9rRJK.1U1qpKur0mkjAGgzMMPuketKPR5fhOu', '2018-01-26 23:09:11', 2, 'Ryan', 'Crawford', '28 colin park', '07855711243'),
 (19, 'gbf', 'gbf@live.com', '$2y$10$c57xadtGtLCHHZ/8KyfAZuxcXjglE0LVO23V0c2ayPso.6AxQwCM6', '2018-01-26 23:15:18', 2, '', '', '', ''),
 (20, 'bruce', 'bruce123@hotmail.com', '$2y$10$qB/Xx0/yVLroWdL5qvdh/uQ/.8sfY7rQ8uh97gz/lsL8EnL3GeHLu', '2018-01-26 23:19:23', 2, '', '', '', ''),
-(21, 'TEST', 'test1234@live.com', '$2y$10$J6cJdeeFnlmpU3E4cuB8PekT7TjPve.PJmSMigW6sq3AUSY0Yndyy', '2018-01-26 23:40:12', 2, '', '', '', '');
+(21, 'TEST', 'test1234@live.com', '$2y$10$J6cJdeeFnlmpU3E4cuB8PekT7TjPve.PJmSMigW6sq3AUSY0Yndyy', '2018-01-26 23:40:12', 2, '', '', '', ''),
+(22, 'yaya', 'yaya@hotmail.com', '$2y$10$OmmiJVuGvstWEoU/QcJw7OL1cFpvJj6rYALeZW1RiCxNr7pXuXZla', '2018-02-16 11:10:15', 2, '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usertype`
+--
+
+CREATE TABLE `usertype` (
+  `UserTypeID` int(11) NOT NULL,
+  `Role` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `usertype`
+--
+
+INSERT INTO `usertype` (`UserTypeID`, `Role`) VALUES
+(1, 'Admin'),
+(2, 'Standard');
 
 --
 -- Indexes for dumped tables
@@ -2482,11 +2524,23 @@ ALTER TABLE `space`
   ADD KEY `space_ibfk_2` (`SpaceTypeID`);
 
 --
+-- Indexes for table `spacetype`
+--
+ALTER TABLE `spacetype`
+  ADD PRIMARY KEY (`SpaceTypeID`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`UserID`),
   ADD KEY `userUserTypeID` (`UserTypeID`);
+
+--
+-- Indexes for table `usertype`
+--
+ALTER TABLE `usertype`
+  ADD PRIMARY KEY (`UserTypeID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -2529,10 +2583,22 @@ ALTER TABLE `space`
   MODIFY `SpaceID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2251;
 
 --
+-- AUTO_INCREMENT for table `spacetype`
+--
+ALTER TABLE `spacetype`
+  MODIFY `SpaceTypeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `UserID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `usertype`
+--
+ALTER TABLE `usertype`
+  MODIFY `UserTypeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
